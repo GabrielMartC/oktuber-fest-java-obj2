@@ -2,7 +2,7 @@
 
 En Münich-Alemania, todos los años se festeja la Oktubrefest. Para esta gran feria de comidas, entretenimientos y mucha cerveza nos piden construir un programa en objetos que modele el comportamiento de las personas en la fiesta. 
 
-Al entrar en la fiesta se pueden encontrar enormes carpas cerveceras, en donde muchísima gente se reune a . . . bueno . . . tomar cerveza. Queremos controlar la entrada a estas carpas dependiendo de la disponibilidad de la carpa y los gustos del público.
+Al entrar en la fiesta se pueden encontrar enormes carpas cerveceras, en donde muchísima gente se reune a . . . bueno . . . tomar cerveza. Queremos    controlar la entrada a estas carpas dependiendo de la disponibilidad de la carpa y los gustos del público.
 
 
 ## Marcas y jarras
