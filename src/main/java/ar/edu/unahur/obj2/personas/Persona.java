@@ -2,6 +2,8 @@ package ar.edu.unahur.obj2.personas;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ar.edu.unahur.obj2.carpas.Carpa;
 import ar.edu.unahur.obj2.jarras.JarraCerveza;
 import ar.edu.unahur.obj2.marcas.Marca;
 import ar.edu.unahur.obj2.paises.Pais;
@@ -46,6 +48,35 @@ public class Persona {
     public void consumirJarra(JarraCerveza jarraCerv) {
         // if(leGusta_MarcaCerveza(jarraCerv.getMarca()))
         jarrasCompradas.add(jarraCerv);
+    }
+
+
+
+
+    //req seg P. 5
+    public Boolean quiereEntrarALaCarpa(Carpa unaCarpa){
+
+        Boolean condicionPrincipal = this.leGusta_MarcaCerveza(unaCarpa.getMarcaQueVende()) && 
+            ((leGustaMusicTrad && unaCarpa.getHayBandaDeMusicaTrad()) || 
+            (!leGustaMusicTrad && !unaCarpa.getHayBandaDeMusicaTrad()));
+
+        if(nacionalidad.equals(Pais.ALEMANIA)){
+            condicionPrincipal = condicionPrincipal && (unaCarpa.getLimitePersonas() % 2 == 0);
+        }
+        return condicionPrincipal;
+    }
+
+    //req seg P. 7
+    public Boolean puedeEntrarACarpa(Carpa c){
+        return quiereEntrarALaCarpa(c) && c.dejarIngresarAPersona(this);
+    }
+
+    //req seg P. 8
+    public void ingresarACarpa(Carpa unaCarpa){
+        if(!puedeEntrarACarpa(unaCarpa)){
+            throw new IllegalArgumentException("La persona no pudo ingresar a la carpa.");
+        }
+        unaCarpa.ingresarPersona(this);
     }
     
 }
