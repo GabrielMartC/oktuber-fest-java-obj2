@@ -16,6 +16,15 @@ public class JarraCerveza {
         return (marcaCerveza.graduacionAlcoholica() * capacidad) / 100;
     }
 
+    public Double getCapacidad() {
+        return capacidad;
+    }
+
+    public Marca getMarcaCerveza() {
+        return marcaCerveza;
+    }
+
+    
 
 
     

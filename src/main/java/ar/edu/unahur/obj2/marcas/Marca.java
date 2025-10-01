@@ -18,6 +18,12 @@ public abstract class Marca {
         return cantLupulo;
     }
 
+    public Pais getPaisOrigen() {
+        return paisOrigen;
+    }
+
+    
+
     
 
 

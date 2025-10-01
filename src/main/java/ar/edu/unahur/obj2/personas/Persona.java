@@ -46,8 +46,12 @@ public class Persona {
 
 
     public void consumirJarra(JarraCerveza jarraCerv) {
-        // if(leGusta_MarcaCerveza(jarraCerv.getMarca()))
         jarrasCompradas.add(jarraCerv);
+    }
+
+    public List<JarraCerveza> getJarrasConsumidas(){
+        List<JarraCerveza> jarrasCompradasCopia = new ArrayList<JarraCerveza>(jarrasCompradas);
+        return jarrasCompradasCopia;
     }
 
 
@@ -78,5 +82,14 @@ public class Persona {
         }
         unaCarpa.ingresarPersona(this);
     }
-    
+
+    //req seg P. 10 func aux
+    public Boolean soloComproJarrasMasDe1Lts(){
+        return jarrasCompradas.stream().allMatch(j -> j.getCapacidad() > 1.0);
+    }
+
+    //req seg P. 11
+    public Boolean esPatriota(){
+        return jarrasCompradas.stream().allMatch(jarra -> jarra.getMarcaCerveza().getPaisOrigen().equals(this.nacionalidad));
+    }
 }

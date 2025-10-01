@@ -8,13 +8,6 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unahur.obj2.paises.Pais;
 
 public class MarcaTest {
-    /*
-     * Existen varias marcas de cerveza. Están las marcas de cerveza rubia (como la Corona), 
-     * las marcas de cerveza negra (como la Guiness), y las marcas de cerveza roja (como la Hofbräu). 
-     * De cada marca se sabe su contenido de lúpulo, o sea, cuántos gramos de lúpulo por litro llevan.
-     *  También se conoce el país donde se fabrica.
-     * 
-    */
     Marca hofbrauCervR = new CervezaRoja(50.0, Pais.ALEMANIA);
     Marca corona = new CervezaRubia(50.0, Pais.BELGICA , 0.06);
     Marca GuinessCervN = new CervezaNegra(15.0, Pais.CHECOSLOVAQUIA);
