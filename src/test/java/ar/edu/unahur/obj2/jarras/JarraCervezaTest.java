@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unahur.obj2.carpas.Carpa;
 import ar.edu.unahur.obj2.marcas.CervezaRoja;
 import ar.edu.unahur.obj2.marcas.Marca;
 import ar.edu.unahur.obj2.marcas.Reglamento;
@@ -17,7 +18,9 @@ import ar.edu.unahur.obj2.personas.Persona;
 
 public class JarraCervezaTest {
     Marca hofbrauCervRoj = new CervezaRoja(50.0, Pais.ALEMANIA);
-    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervRoj);
+    Carpa carpaHof = new Carpa(6, Boolean.FALSE, hofbrauCervRoj);
+
+    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervRoj, carpaHof);
 
 
     @BeforeEach

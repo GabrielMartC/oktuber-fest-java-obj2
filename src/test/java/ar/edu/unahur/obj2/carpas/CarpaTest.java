@@ -2,6 +2,7 @@ package ar.edu.unahur.obj2.carpas;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -25,15 +26,21 @@ public class CarpaTest {
     Marca hofbrauCervR = new CervezaRoja(50.0, Pais.ALEMANIA);
     Marca corona = new CervezaRubia(50.0, Pais.BELGICA , 0.06);
     Marca GuinessCervN = new CervezaNegra(15.0, Pais.CHECOSLOVAQUIA);
+    Marca brahma = new CervezaRubia(50.0, Pais.BELGICA , 0.04);
 
-    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervR);
-    JarraCerveza jarra2 = new JarraCerveza(1.0, corona);
+
+    Carpa carpaCorona = new Carpa(6, Boolean.FALSE,
+         new CervezaRubia(50.0, Pais.BELGICA , 0.09)); //ej cerveza corona fuerte
+
+    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervR, carpaCorona);
+    JarraCerveza jarra2 = new JarraCerveza(1.0, corona, carpaCorona);
 
     Persona juan = new Persona(95.0, Boolean.FALSE, 20, List.of(corona, GuinessCervN), Pais.BELGICA);
     Persona gabriel = new Persona(96.0, Boolean.FALSE, 30, List.of(corona), Pais.CHECOSLOVAQUIA);
+    Persona maria = new Persona(63.30, Boolean.FALSE, 60, List.of(corona, brahma), Pais.BELGICA);
+    Persona jose = new Persona(95.0, Boolean.FALSE, 20, List.of(corona, GuinessCervN), Pais.BELGICA);
 
-    Carpa carpaCorona = new Carpa(6, Boolean.FALSE,
-         new CervezaRubia(50.0, Pais.BELGICA , 0.09)); 
+
 
     @BeforeEach
     public void init(){
@@ -79,7 +86,7 @@ public class CarpaTest {
     @Test
     void gabrielIngresarACarpaCorona() {
         gabriel.ingresarACarpa(carpaCorona);
-        assertEquals(1, carpaCorona.cantTotalClientes());;
+        assertEquals(1, carpaCorona.cantTotalAsistentes());
     }
 
     @Test
@@ -97,7 +104,45 @@ public class CarpaTest {
     }
 
     @Test
+    void servirJarraDeCapacidadMedioLitroAJuanDaError() {
+
+        // Use assertThrows to capture the exception
+        IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> carpaCorona.servirJarraDeCapacidad_APersona(0.5, juan),
+            "La persona no esta en la carpa."
+        );
+
+        // Assert the message of the thrown exception
+        assertEquals("La persona no esta en la carpa.", thrown.getMessage(), "La persona no esta en la carpa.");
+    }
+
+    @Test
     void cantEbriosEmpedernidosEnCarpaCorona0() {
         assertEquals(0, carpaCorona.cantEbriosEmpedernidos());
+    }
+
+    //TEST REQ AVANZ
+
+    @Test
+    void carpaCoronaEsHomogenea(){
+        carpaCorona.ingresarPersona(juan);
+        carpaCorona.ingresarPersona(maria);
+        assertTrue(carpaCorona.esHomogenea());
+    }
+
+    @Test
+    void asistentesQueNoRecibieronJarraGabrielYJose(){
+        carpaCorona.ingresarPersona(juan);
+        carpaCorona.ingresarPersona(maria);
+        carpaCorona.ingresarPersona(gabriel);
+        carpaCorona.ingresarPersona(jose);
+        
+        carpaCorona.servirJarraDeCapacidad_APersona(1.0, juan);
+        carpaCorona.servirJarraDeCapacidad_APersona(0.5, maria);
+        Set personas = new HashSet<>();
+        personas.add(gabriel);
+        personas.add(jose);
+        assertEquals(personas, new HashSet<>(carpaCorona.asistentesQueNoRecibieronJarra()));
     }
 }

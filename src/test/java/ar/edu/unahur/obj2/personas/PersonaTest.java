@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,21 +28,32 @@ public class PersonaTest {
 
     Marca GuinessCervN = new CervezaNegra(15.0, Pais.CHECOSLOVAQUIA);
 
-    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervR);
-    JarraCerveza jarra2 = new JarraCerveza(1.0, corona);
+    Carpa carpaCorona = new Carpa(6, Boolean.FALSE, corona);
+
+    JarraCerveza jarra1 = new JarraCerveza(0.5, hofbrauCervR, carpaCorona);
+    JarraCerveza jarra2 = new JarraCerveza(1.0, corona, carpaCorona);
+    JarraCerveza jarra3 = new JarraCerveza(1.2, brahma, carpaCorona);
+
 
     Persona juan = new Persona(95.0, Boolean.FALSE, 20, List.of(corona, GuinessCervN), Pais.BELGICA);
     Persona gabriel = new Persona(96.0, Boolean.FALSE, 30, List.of(corona), Pais.CHECOSLOVAQUIA);
-
-    Carpa carpaCorona = new Carpa(6, Boolean.FALSE, corona);
+    Persona maria = new Persona(63.30, Boolean.FALSE, 60, List.of(corona, brahma), Pais.ALEMANIA);
+    // Carpa carpaBrahma = new Carpa(6, Boolean.FALSE, corona);
+    Persona jose = new Persona(95.0, Boolean.FALSE, 20, List.of(corona, GuinessCervN), Pais.BELGICA);
 
     @BeforeEach
     public void init(){
         Reglamento.getInstance().setGraduacionReglamentaria(40.0);
+
         juan.consumirJarra(jarra1);
         juan.consumirJarra(jarra2);
+
+        jose.consumirJarra(jarra1);
+        jose.consumirJarra(jarra2);
+        jose.consumirJarra(jarra3);
     }
 
+    //JUAN
     @Test
     void juanCantTotalDeAlcoholIngerida_() {
         //(((40.0 * 1.25) * 0.5 / 100) + (0.09 * 1.0 / 100)))
@@ -82,7 +95,6 @@ public class PersonaTest {
 
 
     //gabriel
-
     @Test
     void gabrielNoLeGustaMarcaBrahma() {
         assertFalse(gabriel.leGusta_MarcaCerveza(brahma));
@@ -108,5 +120,50 @@ public class PersonaTest {
         assertTrue(gabriel.puedeEntrarACarpa(carpaCorona));
     }
 
+    //MARIA
+    @Test
+    void mariaQuiereEntrarALaCarpaCorona(){
+        assertTrue(maria.quiereEntrarALaCarpa(carpaCorona));
+    }
+
+    //TEST REQ AVANZ
+    @Test
+    void juanYJoseSonPersonasCompatibles(){
+
+        assertTrue(jose.esCompatibleConPersona_(juan));
+    }
+
+    @Test
+    void juanRecibioJarrasEnCarpaCorona(){
+        Set carpas = new HashSet<>();
+        carpas.add(carpaCorona);
+        assertEquals(carpas, new HashSet<>(juan.carpasDondeRecibioJarras()));
+    }
+
+    @Test
+    void joseEstaEntrandoAlVicio(){
+        assertTrue(jose.entrandoEnElVicio());
+    }
+
+    @Test
+    void mariaNoEstaEntrandoAlVicioYSeProduceError(){
+        IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> maria.entrandoEnElVicio(), 
+            "La persona no bebio ninguna jarra o bebio solo 1"
+        );
+
+        // Assert the message of the thrown exception
+        assertEquals("La persona no bebio ninguna jarra o bebio solo 1", thrown.getMessage(), "La persona no bebio ninguna jarra o bebio solo 1");
+    }
+
+    @Test
+    void gabrielNoEstaEntrandoAlVicio(){
+        gabriel.consumirJarra(jarra3);
+        gabriel.consumirJarra(jarra1);
+        gabriel.consumirJarra(jarra2);
+
+        assertFalse(gabriel.entrandoEnElVicio());
+    }
 
 }
